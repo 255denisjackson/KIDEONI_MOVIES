@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KIDEONI MOVIES — Stream free reels &amp; full movies</title>
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  .hero {
+    position: relative; min-height: 62vh; display: flex; align-items: flex-end;
+    background: linear-gradient(0deg, rgba(10,10,11,1), rgba(10,10,11,0.3)), #151517;
+    background-size: cover; background-position: center top;
+    border-radius: 0 0 var(--radius-l) var(--radius-l); overflow: hidden;
+  }
+  .hero-inner { padding: 48px 28px 44px; max-width: 620px; }
+  .hero-inner h1 { font-size: 38px; margin: 0 0 10px; line-height: 1.1; }
+  .row-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+  .row-head h2 { font-size: 20px; margin: 0; }
+  .row-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 6px; }
+  .row-scroll > a { flex: 0 0 150px; }
+  .row-scroll > a.reel-card { flex-basis: 130px; }
+  .row-scroll::-webkit-scrollbar { height: 6px; }
+  .row-scroll::-webkit-scrollbar-thumb { background: var(--ink-line); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">KIDE<span class="accent">ONI</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Home</a>
+      <a href="browse.html">Movies</a>
+      <a href="reels.html">Reels</a>
+      <a href="pricing.html">Plans</a>
+    </div>
+    <div class="nav-right">
+      <div id="navAuthSlot" style="display:flex; gap:10px; align-items:center;"></div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="hero" id="heroBanner">
+  <div class="hero-inner">
+    <h1 id="heroTitle">Welcome to KIDEONI</h1>
+    <p class="lede" id="heroSynopsis">Free reels, trending movies, and full-length films — all in one place.</p>
+    <a href="browse.html" class="btn btn-primary" style="margin-top:14px;">Watch now</a>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="section">
+    <div class="row-head">
+      <h2>Reels</h2>
+      <a href="reels.html" class="muted">See all →</a>
+    </div>
+    <div class="row-scroll" id="reelsRow">
+      <div class="reel-card skeleton"></div>
+      <div class="reel-card skeleton"></div>
+      <div class="reel-card skeleton"></div>
+      <div class="reel-card skeleton"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="row-head">
+      <h2>Free to watch</h2>
+      <a href="browse.html?filter=free" class="muted">See all →</a>
+    </div>
+    <div class="row-scroll" id="freeMoviesRow">
+      <div class="poster-card skeleton"></div>
+      <div class="poster-card skeleton"></div>
+      <div class="poster-card skeleton"></div>
+      <div class="poster-card skeleton"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="row-head">
+      <h2>Trending</h2>
+      <a href="browse.html" class="muted">See all →</a>
+    </div>
+    <div class="row-scroll" id="trendingRow">
+      <div class="poster-card skeleton"></div>
+      <div class="poster-card skeleton"></div>
+      <div class="poster-card skeleton"></div>
+      <div class="poster-card skeleton"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="logo" style="font-size:18px;">KIDE<span class="accent">ONI</span> MOVIES</div>
+    <div>© <span id="year"></span> KIDEONI MOVIES. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/movies.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+loadHome();
+</script>
+</body>
+</html>
