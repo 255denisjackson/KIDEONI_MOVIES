@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plans &amp; pricing — KIDEONI MOVIES</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">KIDE<span class="accent">ONI</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="browse.html">Movies</a>
+      <a href="reels.html">Reels</a>
+      <a href="pricing.html" class="active">Plans</a>
+    </div>
+    <div class="nav-right">
+      <div id="navAuthSlot" style="display:flex; gap:10px; align-items:center;"></div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap section">
+  <h1 style="font-size:36px; margin-bottom:8px;">Choose your plan</h1>
+  <p class="lede" style="margin-bottom:34px;">Reels are always free. Pick a plan for full-length movies.</p>
+
+  <div class="plans-grid" id="plansGrid">
+    <div class="plan-card skeleton" style="height:320px;"></div>
+    <div class="plan-card skeleton" style="height:320px;"></div>
+    <div class="plan-card skeleton" style="height:320px;"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="logo" style="font-size:18px;">KIDE<span class="accent">ONI</span> MOVIES</div>
+    <div>© <span id="year"></span> KIDEONI MOVIES. All rights reserved. Built by DENIS JACKSON.</div>
+  </div>
+</footer>
+
+<!-- Checkout modal -->
+<div class="modal-backdrop" id="checkoutModal" style="display:none;">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+      <h3 style="margin:0;">Complete your payment</h3>
+      <button class="btn btn-ghost btn-sm" id="closeCheckout">Close</button>
+    </div>
+    <p class="tag" id="checkoutPlanLabel" style="display:inline-block; margin-bottom:18px;"></p>
+    <div class="field">
+      <label for="phoneInput">Mobile money number</label>
+      <input id="phoneInput" type="tel" placeholder="e.g. 07XXXXXXXX" />
+    </div>
+    <button class="btn btn-primary btn-block" id="payBtn">Pay with PayIn</button>
+    <p class="form-msg" id="checkoutMsg"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/payments.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+loadPlans();
+</script>
+</body>
+</html>
