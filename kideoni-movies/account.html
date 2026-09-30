@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your account — KIDEONI MOVIES</title>
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  .avatar-wrap { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+  .avatar-img {
+    width: 76px; height: 76px; border-radius: 50%; object-fit: cover;
+    background: var(--ink-card); border: 1px solid var(--ink-line);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 26px; font-weight:600; color: var(--paper-dim);
+  }
+  .avatar-edit-btn {
+    position:absolute; right:-2px; bottom:-2px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #f25a24; color:#fff; border: 2px solid #0a0a0b;
+    font-size: 12px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; padding:0;
+  }
+<style>
+  .avatar-wrap { position: relative; width: 96px; height: 96px; flex-shrink: 0; }
+  .avatar-img {
+    width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+    background: var(--ink-card-2); border: 2px solid var(--ink-line);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 32px; font-weight:700; color: var(--paper-dim);
+  }
+  .avatar-edit-btn {
+    position:absolute; right:-2px; bottom:-2px;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent); color:#fff; border: 3px solid var(--ink-bg);
+    font-size: 13px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; padding:0;
+  }
+  .verified-tick {
+    position:absolute; top:-2px; right:-2px;
+    display:flex; align-items:center; justify-content:center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background:#3b8bf5; color:#fff; font-size: 13px;
+    border: 3px solid var(--ink-bg);
+  }
+  .profile-header { display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap; }
+  .profile-name-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .profile-actions { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .profile-stats { display:flex; gap:28px; margin-top:18px; }
+  .profile-stats .stat-item { text-align:left; }
+  .profile-stats .stat-num { font-size:19px; font-weight:800; display:block; }
+  .profile-stats .stat-label { font-size:12px; color:var(--paper-dim); }
+  .plan-features { margin: 12px 0 0; padding: 0; list-style:none; display:flex; flex-direction:column; gap:6px; }
+  .plan-features li { font-size: 13.5px; color: var(--paper-dim); display:flex; gap:8px; align-items:flex-start; }
+  .plan-features li::before { content:"✓"; color:#4caf7d; flex-shrink:0; }
+
+  @media (max-width: 560px) {
+    .profile-header { flex-direction:column; align-items:center; text-align:center; }
+    .profile-name-row { justify-content:center; }
+    .profile-stats { justify-content:center; }
+    .profile-actions { justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">KIDE<span class="accent">ONI</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="browse.html">Movies</a>
+      <a href="reels.html">Reels</a>
+      <a href="pricing.html">Plans</a>
+    </div>
+    <div class="nav-right">
+      <div id="navAuthSlot" style="display:flex; gap:10px; align-items:center;"></div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap section" style="max-width:720px;">
+  <div class="panel" style="margin-bottom:20px;" id="profilePanel">
+    <div class="skeleton" style="height:140px;"></div>
+  </div>
+
+  <div class="panel" style="margin-bottom:20px;">
+    <h3 style="margin-bottom:14px;">Saved</h3>
+    <div id="savedGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(100px, 1fr)); gap:10px;">
+      <p class="muted">Loading…</p>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:20px;">
+    <h3 style="margin-bottom:14px;">Billing history</h3>
+    <div id="billingList"><p class="muted">Loading…</p></div>
+  </div>
+
+  <button class="btn btn-ghost" id="logoutBtn">Sign out</button>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="logo" style="font-size:18px;">KIDE<span class="accent">ONI</span> MOVIES</div>
+    <div>© <span id="year"></span> KIDEONI MOVIES. Built by DENIS JACKSON.</div>
+  </div>
+</footer>
+
+<!-- Get verified modal -->
+<div class="modal-backdrop" id="verifyModal">
+  <div class="modal-box" style="max-width:380px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 style="margin:0;">Get the blue tick</h3>
+      <button class="btn btn-ghost btn-sm" type="button" id="closeVerifyModal">Close</button>
+    </div>
+    <p class="muted" style="margin-bottom:16px;">A one-time verification fee confirms your account. Your tick appears automatically once payment is confirmed.</p>
+    <div class="field">
+      <label for="verifyPhoneInput">Mobile money number</label>
+      <input id="verifyPhoneInput" type="tel" placeholder="e.g. 07XXXXXXXX" />
+    </div>
+    <button class="btn btn-primary btn-block" id="verifyPayBtn">Pay &amp; request verification</button>
+    <p class="form-msg" id="verifyModalMsg"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/auth.js"></script>
+<script>
+(async function () {
+  const session = await requireAuth();
+  if (!session) return;
+
+  const { data: profile } = await window.sb
+    .from("profiles")
+    .select("*, plans:plan_id(name, price, currency, duration_days, features)")
+    .eq("id", session.user.id)
+    .single();
+
+  const [{ count: savedCount }, { count: likedCount }, { data: pendingVerify }] = await Promise.all([
+    window.sb.from("saved_items").select("id", { count: "exact", head: true }).eq("user_id", session.user.id),
+    window.sb.from("likes").select("id", { count: "exact", head: true }).eq("user_id", session.user.id),
+    window.sb.from("verification_requests").select("id").eq("user_id", session.user.id).eq("status", "pending").limit(1),
+  ]);
+  const hasPendingVerification = !!pendingVerify?.length;
+
+  function maskEmail(email) {
+    if (!email || !email.includes("@")) return email || "";
+    const [local, domain] = email.split("@");
+    const visible = local.slice(0, 2);
+    const domainParts = domain.split(".");
+    const maskedDomain = domainParts[0].slice(0, 1) + "***";
+    const tld = domainParts.slice(1).join(".");
+    return `${visible}${"*".repeat(Math.max(local.length - 2, 3))}@${maskedDomain}${tld ? "." + tld : ""}`;
+  }
+
+  function renderAvatar() {
+    if (profile?.avatar_url) {
+      return `<img class="avatar-img" src="${profile.avatar_url}" alt="Profile photo" />`;
+    }
+    const initial = (profile?.full_name || session.user.email || "U").trim().charAt(0).toUpperCase();
+    return `<div class="avatar-img">${initial}</div>`;
+  }
+
+  const statusLabel = {
+    active: "Active",
+    inactive: "No active plan",
+    expired: "Expired",
+    canceled: "Canceled",
+  }[profile?.subscription_status] || "No active plan";
+
+  const plan = profile?.plans;
+  const featuresHTML = plan?.features?.length
+    ? `<ul class="plan-features">${plan.features.map((f) => `<li>${f}</li>`).join("")}</ul>`
+    : "";
+
+  const memberSince = profile?.created_at ? new Date(profile.created_at).getFullYear() : "—";
+
+  const verifyActionHTML = profile?.is_verified
+    ? `<span class="tag" style="color:#3b8bf5; border-color:#3b8bf5;">✓ Verified</span>`
+    : hasPendingVerification
+    ? `<span class="tag">Verification pending</span>`
+    : `<button class="btn btn-ghost btn-sm" id="getVerifiedBtn">Get verified ✓</button>`;
+
+  document.getElementById("profilePanel").innerHTML = `
+    <div class="profile-header">
+      <div class="avatar-wrap">
+        ${renderAvatar()}
+        <button class="avatar-edit-btn" id="avatarEditBtn" type="button" title="Change photo">✎</button>
+        ${profile?.is_verified ? `<span class="verified-tick" title="Verified">✓</span>` : ""}
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" />
+      </div>
+      <div style="flex:1; min-width:200px;">
+        <div class="profile-name-row">
+          <h3 style="margin:0;">${profile?.full_name || "Your account"}</h3>
+        </div>
+        <p class="muted">${maskEmail(session.user.email)}</p>
+        <div class="profile-stats">
+          <div class="stat-item"><span class="stat-num">${savedCount ?? 0}</span><span class="stat-label">Saved</span></div>
+          <div class="stat-item"><span class="stat-num">${likedCount ?? 0}</span><span class="stat-label">Liked</span></div>
+          <div class="stat-item"><span class="stat-num">${memberSince}</span><span class="stat-label">Member since</span></div>
+        </div>
+        <div class="profile-actions">
+          ${verifyActionHTML}
+          <a href="pricing.html" class="btn btn-primary btn-sm">
+            ${profile?.subscription_status === "active" ? "Change plan" : "Choose a plan"}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; padding-top:18px; border-top:1px solid var(--ink-line);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <span class="tag">${statusLabel}</span>
+        <div style="text-align:right;">
+          ${plan?.name ? `<strong>${plan.name}</strong>` : ""}
+          ${plan?.price != null ? `<div class="muted">${Number(plan.price) === 0 ? "Free" : `${plan.price} ${plan.currency || ""}${plan.duration_days >= 365 ? "/year" : plan.duration_days ? "/month" : ""}`}</div>` : ""}
+          ${profile?.subscription_expires_at ? `<div class="muted">Renews / expires ${new Date(profile.subscription_expires_at).toLocaleDateString()}</div>` : ""}
+        </div>
+      </div>
+      ${featuresHTML}
+    </div>
+  `;
+
+  // ---- Get verified modal ----
+  const verifyModal = document.getElementById("verifyModal");
+  document.getElementById("getVerifiedBtn")?.addEventListener("click", () => {
+    verifyModal.classList.add("open");
+  });
+  document.getElementById("closeVerifyModal").addEventListener("click", () => {
+    verifyModal.classList.remove("open");
+  });
+  document.getElementById("verifyPayBtn").addEventListener("click", async () => {
+    const btn = document.getElementById("verifyPayBtn");
+    const msg = document.getElementById("verifyModalMsg");
+    const phone = document.getElementById("verifyPhoneInput").value.trim();
+    msg.className = "form-msg";
+    if (!phone) {
+      msg.textContent = "Enter the mobile money number you'll pay with.";
+      msg.className = "form-msg show error";
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = "Starting payment…";
+    try {
+      const res = await window.callFunction("request-verification", { phone });
+      msg.textContent = res.instructions || "Payment started — check your phone.";
+      msg.className = "form-msg show success";
+    } catch (e) {
+      msg.textContent = e.message || "Could not start payment.";
+      msg.className = "form-msg show error";
+      btn.disabled = false;
+      btn.textContent = "Pay & request verification";
+    }
+  });
+
+  function bindAvatarControls() {
+    const editBtn = document.getElementById("avatarEditBtn");
+    const input = document.getElementById("avatarInput");
+    editBtn.addEventListener("click", () => input.click());
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      if (!file) return;
+      const ext = file.name.split(".").pop();
+      const path = `${session.user.id}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await window.sb.storage.from("avatars").upload(path, file, { upsert: true });
+      if (upErr) {
+        alert("Couldn't upload photo: " + upErr.message);
+        return;
+      }
+      const { data: pub } = window.sb.storage.from("avatars").getPublicUrl(path);
+      await window.sb.from("profiles").update({ avatar_url: pub.publicUrl }).eq("id", session.user.id);
+      profile.avatar_url = pub.publicUrl;
+      document.querySelector(".avatar-wrap").innerHTML =
+        renderAvatar() +
+        `<button class="avatar-edit-btn" id="avatarEditBtn" type="button" title="Change photo">✎</button><input type="file" id="avatarInput" accept="image/*" style="display:none;" />`;
+      bindAvatarControls();
+    });
+  }
+  bindAvatarControls();
+
+  const { data: saved } = await window.sb
+    .from("saved_items")
+    .select("content_type, content_id, created_at")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: false });
+
+  const savedGrid = document.getElementById("savedGrid");
+  if (!saved?.length) {
+    savedGrid.innerHTML = `<p class="muted">Nothing saved yet — tap the bookmark icon on a reel to save it here.</p>`;
+  } else {
+    const movieIds = saved.filter((s) => s.content_type === "movie").map((s) => s.content_id);
+    const reelIds = saved.filter((s) => s.content_type === "reel").map((s) => s.content_id);
+    const [{ data: savedMovies }, { data: savedReels }] = await Promise.all([
+      movieIds.length ? window.sb.from("movies").select("id, title, poster_url").in("id", movieIds) : { data: [] },
+      reelIds.length ? window.sb.from("reels").select("id, title, thumbnail_url").in("id", reelIds) : { data: [] },
+    ]);
+    const movieMap = Object.fromEntries((savedMovies || []).map((m) => [m.id, m]));
+    const reelMap = Object.fromEntries((savedReels || []).map((r) => [r.id, r]));
+
+    savedGrid.innerHTML = saved
+      .map((s) => {
+        const item = s.content_type === "movie" ? movieMap[s.content_id] : reelMap[s.content_id];
+        if (!item) return "";
+        const thumb = item.poster_url || item.thumbnail_url || "https://placehold.co/220x330/151517/F25A24?text=%20";
+        const href = s.content_type === "movie" ? `watch.html?type=movie&id=${item.id}` : `reels.html?open=${item.id}`;
+        return `<a href="${href}" style="display:block; border-radius:8px; overflow:hidden; aspect-ratio:2/3; background:#151517;">
+          <img src="${thumb}" alt="" style="width:100%; height:100%; object-fit:cover;" loading="lazy" />
+        </a>`;
+      })
+      .join("");
+  }
+
+  const { data: payments } = await window.sb
+    .from("payments")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  const billingList = document.getElementById("billingList");
+  if (!payments?.length) {
+    billingList.innerHTML = `<p class="muted">No payments yet.</p>`;
+  } else {
+    billingList.innerHTML = `
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        ${payments
+          .map(
+            (p) => `
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--ink-line); padding-bottom:10px;">
+            <span>${new Date(p.created_at).toLocaleDateString()}</span>
+            <span class="tag">${p.status}</span>
+            <strong>${p.amount} ${p.currency}</strong>
+          </div>`
+          )
+          .join("")}
+      </div>`;
+  }
+
+  document.getElementById("logoutBtn").addEventListener("click", handleLogout);
+  document.getElementById("year").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
